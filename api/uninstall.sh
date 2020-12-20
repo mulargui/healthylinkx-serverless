@@ -1,5 +1,8 @@
 #!/bin/bash -x
 
-#deleting S3 bucket
-aws s3 rm s3://healthylinkx --recursive
-aws s3api delete-bucket --bucket healthylinkx
+#delete the lambda function
+aws lambda delete-function \
+	--function-name taxonomy
+	
+#delete the IAM role used by the lambda
+aws iam delete-role --role-name healthylinkx-lambda 

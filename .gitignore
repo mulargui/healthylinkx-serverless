@@ -107,4 +107,4 @@ dist
 aws-config.sh
 aws/config
 aws/credentials
-aws/envparams
+aws/envparams.sh

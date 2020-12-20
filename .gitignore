@@ -105,3 +105,5 @@ dist
 
 #sensible data
 aws-config.sh
+aws/config
+aws/credentials

@@ -104,4 +104,4 @@ dist
 .tern-port
 
 #sensible data
-config.sh
+aws-config.sh

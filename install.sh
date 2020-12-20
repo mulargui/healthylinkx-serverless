@@ -7,4 +7,11 @@ export ROOT=/vagrant/healthylinkx-serverless
 . ./aws/aws-cli.sh
 
 #install UX
-. ./ux/install.sh
+if [ "$1" == "ux" ]; then
+	. ./ux/install.sh
+fi
+
+#install API
+if [ "$1" == "api" ]; then
+	. ./api/install.sh
+fi

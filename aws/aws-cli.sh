@@ -1,6 +1,8 @@
 
+#alias aws='sudo docker run --rm -v $ROOT/aws:/root/.aws -it amazon/aws-cli' 
+
 aws() {
-    sudo docker run --rm -v $ROOT/aws:/root/.aws -it amazon/aws-cli "$@"
+    sudo docker run --rm -v $ROOT/aws:/root/.aws -v $ROOT:/fs -it amazon/aws-cli "$@"
 }
 export -f aws
 
@@ -9,4 +11,4 @@ aws2() {
 }
 export -f aws2
 
-#alias aws='sudo docker run --rm -v $ROOT/aws:/root/.aws -it amazon/aws-cli' 
+

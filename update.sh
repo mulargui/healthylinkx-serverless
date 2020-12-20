@@ -7,4 +7,11 @@ export ROOT=/vagrant/healthylinkx-serverless
 . ./aws/aws-cli.sh
 
 #update UX
-. ./ux/update.sh
+if [ "$1" == "ux" ]; then
+	. ./ux/update.sh
+fi
+
+#update API
+if [ "$1" == "api" ]; then
+	. ./api/update.sh
+fi

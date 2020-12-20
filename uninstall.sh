@@ -7,4 +7,11 @@ export ROOT=/vagrant/healthylinkx-serverless
 . ./aws/aws-cli.sh
 
 #uninstall UX
-. ./ux/uninstall.sh
+if [ "$1" == "ux" ]; then
+	. ./ux/uninstall.sh
+fi
+
+#uninstall API
+if [ "$1" == "api" ]; then
+	. ./api/uninstall.sh
+fi

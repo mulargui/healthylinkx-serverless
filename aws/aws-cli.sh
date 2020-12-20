@@ -1,0 +1,1 @@
+sudo docker run --rm -v /vagrant/healthylinkx-serverless/aws:/root/.aws -it amazon/aws-cli $1

@@ -1,1 +1,0 @@
-sudo docker run --rm -it amazon/aws-cli $1

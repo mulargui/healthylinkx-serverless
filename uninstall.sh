@@ -5,6 +5,7 @@ export ROOT=/vagrant/healthylinkx-serverless
 
 # set up the aws cli environment
 . ./aws/aws-cli.sh
+. ./aws/envparams.sh
 
 #uninstall UX
 if [ "$1" == "ux" ]; then

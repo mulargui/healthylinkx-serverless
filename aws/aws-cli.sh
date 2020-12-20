@@ -9,4 +9,4 @@ aws2() {
 }
 export -f aws2
 
-#alias aws='sudo docker run --rm -v /vagrant/healthylinkx-serverless/aws:/root/.aws -it amazon/aws-cli' 
+#alias aws='sudo docker run --rm -v $ROOT/aws:/root/.aws -it amazon/aws-cli' 

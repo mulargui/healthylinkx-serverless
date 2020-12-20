@@ -1,0 +1,2 @@
+
+export AWS_ACCOUNT_ID=1234567890

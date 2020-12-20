@@ -11,6 +11,6 @@ zip taxonomy.zip $ROOT/api/src/taxonomy.js
 aws lambda create-function \
 	--function-name taxonomy \
 	--runtime nodejs12.x \
-#	--role arn:aws:iam::1234:role/healthylinkx-lambda \
+	--role arn:aws:iam::1234:role/healthylinkx-lambda \
 	--zip-file fileb:///fs/taxonomy.zip
 rm taxonomy.zip

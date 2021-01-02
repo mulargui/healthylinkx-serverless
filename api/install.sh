@@ -42,6 +42,9 @@ aws apigateway put-integration --rest-api-id $APIID --resource-id $RESOURCEID \
     --http-method GET --type AWS_PROXY --integration-http-method POST \
     --uri arn:aws:apigateway:$AWS_REGION:lambda:path/2015-03-31/functions/${LAMBDAARN}/invocations
 
+#enable CORS
+aws apigatewayv2 update-api --api-id $APIID --cors-configuration AllowOrigins="*"
+
 #deploy all
 aws apigateway create-deployment --rest-api-id $APIID --stage-name prod
 

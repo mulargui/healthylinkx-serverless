@@ -4,7 +4,7 @@
 . ./envparams.sh
 
 # set up the aws cli environment
-. ./.aws/aws-cli.sh
+. $ROOT/.aws/aws-cli.sh
 
 #run a command
 if [ "$1" == "lambda" ]; then

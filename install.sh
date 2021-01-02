@@ -1,11 +1,10 @@
 #!/bin/bash -x
 
-#where are our files
-export ROOT=/vagrant/healthylinkx-serverless
+#global env variables
+. ./aws/envparams.sh
 
 # set up the aws cli environment
 . ./aws/aws-cli.sh
-. ./aws/envparams.sh
 
 #install UX
 if [ "$1" == "ux" ]; then

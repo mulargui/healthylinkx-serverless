@@ -15,7 +15,7 @@ aws lambda create-function \
 	--runtime nodejs12.x \
 	--handler taxonomy.handler \
 	--role arn:aws:iam::$AWS_ACCOUNT_ID:role/healthylinkx-lambda \
-	--zip-file fileb:///fs/taxonomy.zip
+	--zip-file fileb://$ROOT/taxonomy.zip
 rm taxonomy.zip
 
 LAMBDAARN=$(aws lambda list-functions --query "Functions[?FunctionName==\`taxonomy\`].FunctionArn")  

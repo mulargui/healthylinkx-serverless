@@ -104,7 +104,10 @@ dist
 .tern-port
 
 #sensible data
-aws-config.sh
 aws/config
 aws/credentials
 aws/envparams.sh
+.aws/config
+.aws/credentials
+.aws/envparams.sh
+envparams.sh

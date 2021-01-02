@@ -1,8 +1,7 @@
 #!/bin/bash -x
 
 #delete the api gateway
-APINAME=healthylinkx
-APIID=$(aws apigateway get-rest-apis --query "items[?name==\`${APINAME}\`].id")
+APIID=$(aws apigateway get-rest-apis --query "items[?name==\`healthylinkx\`].id")
 aws apigateway delete-rest-api --rest-api-id $APIID
 
 #delete the IAM role used by the apigateway

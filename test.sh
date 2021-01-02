@@ -8,9 +8,9 @@
 
 #run a command
 if [ "$1" == "lambda" ]; then
-	aws lambda invoke --function-name taxonomy /fs/out --log-type Tail --query 'LogResult' |  base64 -d
-	cat out
-	rm out
+	aws lambda invoke --function-name taxonomy $ROOT/out --log-type Tail --query 'LogResult' |  base64 -d
+	cat $ROOT/out
+	rm $ROOT/out
 fi
 
 if [ "$1" == "whoami" ]; then

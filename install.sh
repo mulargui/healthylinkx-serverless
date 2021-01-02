@@ -1,10 +1,10 @@
 #!/bin/bash -x
 
 #global env variables
-. ./aws/envparams.sh
+. ./envparams.sh
 
 # set up the aws cli environment
-. ./aws/aws-cli.sh
+. ./.aws/aws-cli.sh
 
 #install UX
 if [ "$1" == "ux" ]; then

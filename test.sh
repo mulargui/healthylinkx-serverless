@@ -1,10 +1,10 @@
 #!/bin/bash -x
 
 #global env variables
-. ./aws/envparams.sh
+. ./envparams.sh
 
 # set up the aws cli environment
-. ./aws/aws-cli.sh
+. ./.aws/aws-cli.sh
 
 #run a command
 if [ "$1" == "lambda" ]; then

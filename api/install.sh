@@ -43,7 +43,7 @@ aws apigateway put-integration --rest-api-id $APIID --resource-id $RESOURCEID \
     --uri arn:aws:apigateway:$AWS_REGION:lambda:path/2015-03-31/functions/${LAMBDAARN}/invocations
 
 #enable CORS
-aws apigatewayv2 update-api --api-id $APIID --cors-configuration AllowOrigins="*"
+#aws apigatewayv2 update-api --api-id $APIID --cors-configuration AllowOrigins="*"
 
 #deploy all
 aws apigateway create-deployment --rest-api-id $APIID --stage-name prod
@@ -53,3 +53,7 @@ aws lambda add-permission --function-name taxonomy --action lambda:InvokeFunctio
 
 # URL of the api
 echo https://$APIID.execute-api.$AWS_REGION.amazonaws.com/prod/taxonomy
+
+#include the URL in the javascript code
+sed "s/APIID/$APIID/" clientcode.js.template > clientcode.js
+

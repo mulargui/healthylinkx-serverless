@@ -53,7 +53,3 @@ aws lambda add-permission --function-name taxonomy --action lambda:InvokeFunctio
 
 # URL of the api
 echo https://$APIID.execute-api.$AWS_REGION.amazonaws.com/prod/taxonomy
-
-#include the URL in the javascript code
-sed "s/APIID/$APIID/" $ROOT/ux/src/js/clientcode.js.template > $ROOT/ux/src/js/clientcode.js
-

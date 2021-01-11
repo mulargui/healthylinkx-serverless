@@ -7,7 +7,11 @@ exports.handler = async (event) => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "OPTIONS,GET"
         },
-        "body": JSON.stringify(['Acupuncturist','Adult Companion','Advanced Practice Dental Therapist','Advanced Practice Midwife','Air Carrier'])
+        "body": JSON.stringify([{'Classification':'Acupuncturist'},
+			{'Classification':'Adult Companion'},
+			{'Classification':'Advanced Practice Dental Therapist'},
+			{'Classification':'Advanced Practice Midwife'},
+			{'Classification':'Air Carrier'}])
     };
     return response;
 };

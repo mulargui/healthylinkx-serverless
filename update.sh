@@ -15,3 +15,8 @@ fi
 if [ "$1" == "api" ]; then
 	. $ROOT/api/update.sh
 fi
+
+#update datastore
+if [ "$1" == "ds" ]; then
+	. $ROOT/datastore/update.sh
+fi

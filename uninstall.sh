@@ -15,3 +15,8 @@ fi
 if [ "$1" == "api" ]; then
 	. $ROOT/api/uninstall.sh
 fi
+
+#uninstall the datastore 
+if [ "$1" == "ds" ]; then
+	. $ROOT/datastore/uninstall.sh
+fi

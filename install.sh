@@ -15,3 +15,8 @@ fi
 if [ "$1" == "api" ]; then
 	. $ROOT/api/install.sh
 fi
+
+#install datastore
+if [ "$1" == "ds" ]; then
+	. $ROOT/datastore/install.sh
+fi

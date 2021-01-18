@@ -1,5 +1,9 @@
 #!/bin/bash -x
 
+# In order to have public access to the DB outside the VPC I added an inbound rule 
+# to the security group of the VPC (default in my case)
+# protocol:TCP, Port:3306, Source: Anywhere (0.0.0.0/0)
+
 #create mysql instance
 aws rds create-db-instance \
 	--db-instance-identifier healthylinkx-db \

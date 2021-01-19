@@ -1,8 +1,14 @@
 #!/bin/bash -x
 
-# In order to have public access to the DB outside the VPC I added an inbound rule 
-# to the security group of the VPC (default in my case)
+# In order to have public access to the DB
+# we need to create a security group (aka firewall)with an inbound rule 
 # protocol:TCP, Port:3306, Source: Anywhere (0.0.0.0/0)
+aws ec2 create-security-group --group-name DBSecGroup --description "MySQL Sec Group"
+aws ec2 authorize-security-group-ingress \
+	--group-name DBSecGroup \
+	--protocol tcp \
+	--port 3306 \
+	--cidr 0.0.0.0/0
 
 #create mysql instance
 aws rds create-db-instance \
@@ -14,4 +20,5 @@ aws rds create-db-instance \
 	--master-username $DBUSER \
 	--master-user-password $DBPWD \
 	--backup-retention-period 0 \
+	--vpc-security-group-ids <value> \
 	--publicly-accessible

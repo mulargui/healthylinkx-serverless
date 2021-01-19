@@ -18,10 +18,13 @@ if [ "$1" == "whoami" ]; then
 fi
 
 if [ "$1" == "sg" ]; then
+	aws ec2 delete-security-group --group-name DBSecGroup
+	exit
 	# aws ec2 create-security-group --group-name DBSecGroup --description "MySQL Sec Group"
 	aws ec2 authorize-security-group-ingress \
 		--group-name DBSecGroup \
 		--protocol tcp \
 		--port 3306 \
 		--cidr 0.0.0.0/0
+	
 fi

@@ -5,7 +5,7 @@
 ENDPOINT=$(aws rds describe-db-instances --db-instance-identifier healthylinkx-db --query "DBInstances[*].Endpoint.Address")
 	
 #unzip de data file
-unzip -o $ROOT/datastore/src/healthylinkxdump.sql.zip -d $ROOT/datastore/src
+#unzip -o $ROOT/datastore/src/healthylinkxdump.sql.zip -d $ROOT/datastore/src
 
 #load the data (and schema) into the database
 mysql -h $ENDPOINT -u $DBUSER -p$DBPWD healthylinkx < $ROOT/datastore/src/healthylinkxdump.sql

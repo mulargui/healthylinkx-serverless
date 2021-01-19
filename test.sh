@@ -20,7 +20,7 @@ fi
 if [ "$1" == "sg" ]; then
 	# aws ec2 create-security-group --group-name DBSecGroup --description "MySQL Sec Group"
 	aws ec2 authorize-security-group-ingress \
-		--group-id sg-0ea7495d541ff3d67 \
+		--group-name DBSecGroup \
 		--protocol tcp \
 		--port 3306 \
 		--cidr 0.0.0.0/0

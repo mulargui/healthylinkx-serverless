@@ -3,6 +3,7 @@
 #wait till the instance is provisioned
 aws rds wait db-instance-available \
     --db-instance-identifier healthylinkx-db
+echo "MySQL provisioned!"
 
 #RDS instance endpoint
 ENDPOINT= $(aws rds describe-db-instances --db-instance-identifier healthylinkx-db --query "DBInstances[*].Endpoint.Address")

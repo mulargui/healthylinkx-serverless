@@ -10,6 +10,8 @@ aws ec2 authorize-security-group-ingress \
 	--port 3306 \
 	--cidr 0.0.0.0/0
 
+SGID=$(aws ec2 describe-security-groups --group-names DBSecGroup --query 'SecurityGroups[*].[GroupId]')
+
 #create mysql instance
 aws rds create-db-instance \
 	--db-instance-identifier healthylinkx-db \
@@ -20,5 +22,5 @@ aws rds create-db-instance \
 	--master-username $DBUSER \
 	--master-user-password $DBPWD \
 	--backup-retention-period 0 \
-	--vpc-security-group-ids <value> \
+	--vpc-security-group-ids $SGID \
 	--publicly-accessible

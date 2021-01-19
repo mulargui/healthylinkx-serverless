@@ -6,7 +6,7 @@ aws rds wait db-instance-available \
 echo "MySQL provisioned!"
 
 #RDS instance endpoint
-ENDPOINT= $(aws rds describe-db-instances --db-instance-identifier healthylinkx-db --query "DBInstances[*].Endpoint.Address")
+ENDPOINT=$(aws rds describe-db-instances --db-instance-identifier healthylinkx-db --query "DBInstances[*].Endpoint.Address")
 	
 #unzip de data file
 unzip -o $ROOT/datastore/src/healthylinkxdump.sql -d $ROOT/datastore/src
@@ -15,7 +15,7 @@ unzip -o $ROOT/datastore/src/healthylinkxdump.sql -d $ROOT/datastore/src
 mysql -h $ENDPOINT -u $DBUSER -p$DBPWD healthylinkx < $ROOT/datastore/src/healthylinkxdump.sql
 
 #delete the unzipped file
-#rm $ROOT/datastore/src/healthylinkxdump.sql
+rm $ROOT/datastore/src/healthylinkxdump.sql
 
 exit
 
@@ -49,6 +49,7 @@ aws rds create-db-instance \
 #wait till the instance is provisioned
 aws rds wait db-instance-available \
     --db-instance-identifier healthylinkx-db
+echo "MySQL provisioned!"
 
 #RDS instance endpoint
 ENDPOINT= $(aws rds describe-db-instances --db-instance-identifier healthylinkx-db --query "DBInstances[*].Endpoint.Address")

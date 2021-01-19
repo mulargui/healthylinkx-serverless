@@ -16,3 +16,7 @@ fi
 if [ "$1" == "whoami" ]; then
 	aws sts get-caller-identity
 fi
+
+if [ "$1" == "sg" ]; then
+	aws ec2 create-security-group --group-name DBSecGroup --description "MySQL Sec Group"
+fi

@@ -1,23 +1,5 @@
 #!/bin/bash -x
 
-#RDS instance endpoint
-ENDPOINT=$(aws rds describe-db-instances --db-instance-identifier healthylinkx-db --query "DBInstances[*].Endpoint.Address")
-	
-#unzip de data file
-unzip -o $ROOT/datastore/src/healthylinkxdump.sql -d $ROOT/datastore/src
-
-#load the data (and schema) into the database
-mysql -h $ENDPOINT -u $DBUSER -p$DBPWD healthylinkx < $ROOT/datastore/src/healthylinkxdump.sql
-
-#delete the unzipped file
-rm $ROOT/datastore/src/healthylinkxdump.sql
-
-exit 1 
-
-
-
-
-
 # In order to have public access to the DB
 # we need to create a security group (aka firewall)with an inbound rule 
 # protocol:TCP, Port:3306, Source: Anywhere (0.0.0.0/0)

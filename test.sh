@@ -13,12 +13,3 @@ if [ "$1" == "lambda" ]; then
 	rm $ROOT/out
 fi
 
-rm -r $ROOT/api/src/node_modules
-rm $ROOT/api/src/package-lock.json
-
-
-# install node dependencies
-(cd $ROOT/api/src; npm install mysql wait.for)
-#mv node_modules $ROOT/api/src
-#mv package-lock.json $ROOT/api/src
-

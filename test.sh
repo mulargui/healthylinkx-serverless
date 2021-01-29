@@ -13,20 +13,15 @@ if [ "$1" == "lambda" ]; then
 	rm $ROOT/out
 fi
 
-if [ "$1" == "whoami" ]; then
-	aws sts get-caller-identity
-fi
+# create contants.js with env values
+ENDPOINT=$(aws rds describe-db-instances --db-instance-identifier healthylinkx-db --query "DBInstances[*].Endpoint.Address")
+sed "s/MySQLDB/$ENDPOINT/" $ROOT/api/src/constants.template.js > $ROOT/api/src/constants.js
+sed "s/YYYYYYYYYY/$DBUSER/" $ROOT/api/src/constants.js > $ROOT/api/src/constants.js
+sed "s/XXXXXXXXXX/$DBPWD/" $ROOT/api/src/constants.js > $ROOT/api/src/constants.js
 
-if [ "$1" == "sg" ]; then
-	SG=$(aws ec2 describe-security-groups --group-names DBSecGroup --query 'SecurityGroups[*].[GroupId]')
-	echo $SG
-	# aws ec2 delete-security-group --group-name DBSecGroup
-	exit
-	aws ec2 create-security-group --group-name DBSecGroup --description "MySQL Sec Group"
-	aws ec2 authorize-security-group-ingress \
-		--group-name DBSecGroup \
-		--protocol tcp \
-		--port 3306 \
-		--cidr 0.0.0.0/0
-	
-fi
+# install node dependencies
+npm install –prefix=$ROOT/api/src mysql wait.for
+
+#creating a lambda with the code
+zip -j taxonomy.zip $ROOT/api/src/taxonomy.js $ROOT/api/src/constants.js $ROOT/api/src/node_modules/*
+

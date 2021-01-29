@@ -3,13 +3,22 @@
 #if you don't have zip installed
 #sudo apt install zip
 
+# create contants.js with env values
+ENDPOINT=$(aws rds describe-db-instances --db-instance-identifier healthylinkx-db --query "DBInstances[*].Endpoint.Address")
+sed "s/MySQLDB/$ENDPOINT/" $ROOT/api/src/constants.template.js > $ROOT/api/src/constants.js
+sed "s/YYYYYYYYYY/$DBUSER/" $ROOT/api/src/constants.js > $ROOT/api/src/constants.js
+sed "s/XXXXXXXXXX/$DBPWD/" $ROOT/api/src/constants.js > $ROOT/api/src/constants.js
+
+# install node dependencies
+npm install –prefix=$ROOT/api/src mysql wait.for
+
 #create a IAM role under which the lambda will run
 aws iam create-role --role-name healthylinkx-lambda --assume-role-policy-document '{"Version": "2012-10-17","Statement": [{ "Effect": "Allow", "Principal": {"Service": "lambda.amazonaws.com"}, "Action": "sts:AssumeRole"}]}'
 #wait a few seconds till the role is created. otherwise there is an error creating the lambda
 sleep 10
 
 #creating a lambda with the code
-zip -j taxonomy.zip $ROOT/api/src/taxonomy.js
+zip -j taxonomy.zip $ROOT/api/src/taxonomy.js $ROOT/api/src/constants.js $ROOT/api/src/node_modules/*
 aws lambda create-function \
 	--function-name taxonomy \
 	--runtime nodejs12.x \

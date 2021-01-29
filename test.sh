@@ -20,6 +20,7 @@ sed "s/MySQLDB/$ENDPOINT/" $ROOT/api/src/constants.template.js > $ROOT/api/src/c
 #sed "s/XXXXXXXXXX/$DBPWD/" $ROOT/api/src/constants.js > $ROOT/api/src/constants.js
 
 # install node dependencies
+mkdir -p $ROOT/api/src/node_modules
 npm install -–prefix $ROOT/api/src mysql wait.for
 
 #creating a lambda with the code

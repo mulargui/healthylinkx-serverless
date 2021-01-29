@@ -10,7 +10,7 @@ sed -i "s/YYYYYYYYYY/$DBUSER/" $ROOT/api/src/constants.js
 sed -i "s/XXXXXXXXXX/$DBPWD/" $ROOT/api/src/constants.js
 
 # install node dependencies
-(cd $ROOT/api/src; npm install mysql wait.for)
+(cd $ROOT/api/src; npm install url dns mysql wait.for)
 
 #create a IAM role under which the lambda will run
 aws iam create-role --role-name healthylinkx-lambda --assume-role-policy-document '{"Version": "2012-10-17","Statement": [{ "Effect": "Allow", "Principal": {"Service": "lambda.amazonaws.com"}, "Action": "sts:AssumeRole"}]}'

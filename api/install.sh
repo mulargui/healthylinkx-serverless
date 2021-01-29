@@ -6,8 +6,8 @@
 # create contants.js with env values
 ENDPOINT=$(aws rds describe-db-instances --db-instance-identifier healthylinkx-db --query "DBInstances[*].Endpoint.Address")
 sed "s/MySQLDB/$ENDPOINT/" $ROOT/api/src/constants.template.js > $ROOT/api/src/constants.js
-sed "s/YYYYYYYYYY/$DBUSER/" $ROOT/api/src/constants.js > $ROOT/api/src/constants.js
-sed "s/XXXXXXXXXX/$DBPWD/" $ROOT/api/src/constants.js > $ROOT/api/src/constants.js
+sed -i "s/YYYYYYYYYY/$DBUSER/" $ROOT/api/src/constants.js
+sed -i "s/XXXXXXXXXX/$DBPWD/" $ROOT/api/src/constants.js
 
 # install node dependencies
 npm install –prefix=$ROOT/api/src mysql wait.for

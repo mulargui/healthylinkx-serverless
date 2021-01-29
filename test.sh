@@ -29,6 +29,6 @@ mv node_modules $ROOT/api/src
 mv package-lock.json $ROOT/api/src
 
 #creating a lambda with the code
-zip -j taxonomy.zip $ROOT/api/src/taxonomy.js $ROOT/api/src/constants.js $ROOT/api/src/package-lock.json $ROOT/api/src/node_modules/*
+zip -r taxonomy.zip $ROOT/api/src/taxonomy.js $ROOT/api/src/constants.js $ROOT/api/src/package-lock.json $ROOT/api/src/node_modules
 
   

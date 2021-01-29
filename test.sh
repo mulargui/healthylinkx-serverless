@@ -13,18 +13,12 @@ if [ "$1" == "lambda" ]; then
 	rm $ROOT/out
 fi
 
-rm taxonomy.zip
 rm -r $ROOT/api/src/node_modules
 rm $ROOT/api/src/package-lock.json
 
 
 # install node dependencies
-npm install mysql wait.for
-mv node_modules $ROOT/api/src
-mv package-lock.json $ROOT/api/src
+(cd $ROOT/api/src; npm install mysql wait.for)
+#mv node_modules $ROOT/api/src
+#mv package-lock.json $ROOT/api/src
 
-#creating a lambda with the code
-#zip -r taxonomy.zip $ROOT/api/src/taxonomy.js $ROOT/api/src/constants.js $ROOT/api/src/package-lock.json $ROOT/api/src/node_modules
-(cd $ROOT/api/src; zip -r taxonomy.zip taxonomy.js constants.js package-lock.json node_modules)
-
-  

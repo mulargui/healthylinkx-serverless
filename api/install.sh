@@ -21,14 +21,14 @@ aws iam create-role --role-name healthylinkx-lambda --assume-role-policy-documen
 sleep 10
 
 #creating a lambda with the code
-zip -j taxonomy.zip $ROOT/api/src/taxonomy.js $ROOT/api/src/constants.js $ROOT/api/src/node_modules/*
+(cd $ROOT/api/src; zip -r taxonomy.zip taxonomy.js constants.js package-lock.json node_modules)
 aws lambda create-function \
 	--function-name taxonomy \
 	--runtime nodejs12.x \
 	--handler taxonomy.handler \
 	--role arn:aws:iam::$AWS_ACCOUNT_ID:role/healthylinkx-lambda \
-	--zip-file fileb://$ROOT/taxonomy.zip
-rm taxonomy.zip
+	--zip-file fileb://$ROOT/api/src/taxonomy.zip
+rm $ROOT/api/src/taxonomy.zip
 
 LAMBDAARN=$(aws lambda list-functions --query "Functions[?FunctionName==\`taxonomy\`].FunctionArn")  
 

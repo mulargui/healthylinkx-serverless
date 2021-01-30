@@ -7,7 +7,7 @@ sed -i "s/YYYYYYYYYY/$DBUSER/" $ROOT/api/src/constants.js
 sed -i "s/XXXXXXXXXX/$DBPWD/" $ROOT/api/src/constants.js
 
 # install node dependencies
-(cd $ROOT/api/src; npm install url dns mysql wait.for)
+(cd $ROOT/api/src; npm install mysql )
 
 #package the code
 (cd $ROOT/api/src; zip -r taxonomy.zip taxonomy.js constants.js package-lock.json node_modules)
@@ -16,7 +16,7 @@ sed -i "s/XXXXXXXXXX/$DBPWD/" $ROOT/api/src/constants.js
 aws lambda update-function-code --function-name taxonomy --zip-file fileb://$ROOT/api/src/taxonomy.zip
 
 # cleanup
-rm $ROOT/api/src/taxonomy.zip
-rm $ROOT/api/src/package-lock.json
-rm $ROOT/api/src/constants.js
-rm -r $ROOT/api/src/node_modules
+#rm $ROOT/api/src/taxonomy.zip
+#rm $ROOT/api/src/package-lock.json
+#rm $ROOT/api/src/constants.js
+#rm -r $ROOT/api/src/node_modules

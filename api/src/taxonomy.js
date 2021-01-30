@@ -28,6 +28,10 @@ exports.handler = async (event) => {
 	var query = "SELECT * FROM taxonomy";
 	db.query(query, function(err,results,fields){		
 		if (err) return ServerReply (500, 'db.query: ' + err);
-		return ServerReply (200, results);
+		return ServerReply (200, [{'Classification':'Acupuncturist'},
+			{'Classification':'Adult Companion'},
+			{'Classification':'Advanced Practice Dental Therapist'},
+			{'Classification':'Advanced Practice Midwife'},
+			{'Classification':'Air Carrier'}]);
 	});
 };

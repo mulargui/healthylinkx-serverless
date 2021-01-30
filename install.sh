@@ -11,11 +11,11 @@ DS=N
 # you can also set the flags using the command line
 for var in "$@"
 do
-	if [ "UX" == "$var" ]; then UX=Y 
+	if [ "ux" == "$var" ]; then UX=Y 
 	fi
-	if [ "API" == "$var" ]; then API=Y 
+	if [ "api" == "$var" ]; then API=Y 
 	fi
-	if [ "DS" == "$var" ]; then DS=Y 
+	if [ "ds" == "$var" ]; then DS=Y 
 	fi
 done
 

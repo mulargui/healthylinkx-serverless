@@ -20,12 +20,12 @@ function ServerReply (code, message){
 }
 
 exports.handler = async (event) => {
-	var dbhost;
-	try{
+	var dbhost=constants.host;
+	/*try{
 		dbhost = wait.for(dns.lookup,constants.host);
 	} catch(err){
 		return ServerReply (500, 'No DNS resolution: ' + constants.host);
-	}
+	}*/
 
 	var db = mysql.createConnection({
 		host:dbhost,

@@ -12,13 +12,15 @@ sed -i "s/XXXXXXXXXX/$DBPWD/" $ROOT/api/src/constants.js
 # install node dependencies
 (cd $ROOT/api/src; npm install url dns mysql wait.for)
 
+#package the code
+(cd $ROOT/api/src; zip -r taxonomy.zip taxonomy.js constants.js package-lock.json node_modules)
+
 #create a IAM role under which the lambda will run
 aws iam create-role --role-name healthylinkx-lambda --assume-role-policy-document '{"Version": "2012-10-17","Statement": [{ "Effect": "Allow", "Principal": {"Service": "lambda.amazonaws.com"}, "Action": "sts:AssumeRole"}]}'
 #wait a few seconds till the role is created. otherwise there is an error creating the lambda
 sleep 10
 
-#creating a lambda with the code
-(cd $ROOT/api/src; zip -r taxonomy.zip taxonomy.js constants.js package-lock.json node_modules)
+#creating a lambda with the package
 aws lambda create-function \
 	--function-name taxonomy \
 	--runtime nodejs12.x \

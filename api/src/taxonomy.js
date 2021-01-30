@@ -27,13 +27,18 @@ exports.handler = async (event) => {
 		return ServerReply (500, 'No DNS resolution: ' + constants.host);
 	}*/
 
-	var db = mysql.createConnection({
-		host:dbhost,
-		user:constants.user,
-		password:constants.password,
-		database:constants.database
-	});
-
+	var db ;
+	try {
+		db = mysql.createConnection({
+			host:dbhost,
+			user:constants.user,
+			password:constants.password,
+			database:constants.database
+		});
+	} catch(err){
+		return ServerReply (500, 'mysql.createConnection: ' + err);
+	}
+	
 	db.connect(function(err) {
 		if (err) return ServerReply (500, 'mysql.createConnection: ' + err);
 	});

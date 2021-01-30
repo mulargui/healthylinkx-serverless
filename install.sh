@@ -4,7 +4,7 @@
 . ./envparams.sh
 
 # set up the aws cli environment
-. $ROOT/.aws/aws-cli.sh
+#. $ROOT/.aws/aws-cli.sh
 
 #install UX
 if [ "$1" == "ux" ]; then

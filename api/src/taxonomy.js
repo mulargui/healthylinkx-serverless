@@ -22,16 +22,16 @@ exports.handler = async (event) => {
 		database:constants.database
 	});
 
+	db.connect(function(err) {
+		if (err) return ServerReply (500, 'mysql.connect: ' + err);
+	});
+
 	return ServerReply (200, [{'Classification':'Acupuncturist'},
 			{'Classification':'Adult Companion'},
 			{'Classification':'Advanced Practice Dental Therapist'},
 			{'Classification':'Advanced Practice Midwife'},
 			{'Classification':'Air Carrier'}]);
 			
-
-	db.connect(function(err) {
-		if (err) return ServerReply (500, 'mysql.connect: ' + err);
-	});
 
 	var query = "SELECT * FROM taxonomy";
 	db.query(query, function(err,results,fields){		

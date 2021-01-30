@@ -16,7 +16,7 @@ sed -i "s/XXXXXXXXXX/$DBPWD/" $ROOT/api/src/constants.js
 aws lambda update-function-code --function-name taxonomy --zip-file fileb://$ROOT/api/src/taxonomy.zip
 
 # cleanup
-#rm $ROOT/api/src/taxonomy.zip
-#rm $ROOT/api/src/package-lock.json
-#rm $ROOT/api/src/constants.js
-#rm -r $ROOT/api/src/node_modules
+rm $ROOT/api/src/taxonomy.zip
+rm $ROOT/api/src/package-lock.json
+rm $ROOT/api/src/constants.js
+rm -r $ROOT/api/src/node_modules

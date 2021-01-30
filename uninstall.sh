@@ -17,6 +17,8 @@ do
 	fi
 	if [ "ds" == "$var" ]; then DS=Y 
 	fi
+	if [ "all" == "$var" ]; then DS=Y ; API=Y ; UX=Y 
+	fi
 done
 
 # we uninstall from the frontend to the backend

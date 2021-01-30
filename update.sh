@@ -14,6 +14,8 @@ do
 	fi
 	if [ "api" == "$var" ]; then API=Y 
 	fi
+	if [ "all" == "$var" ]; then API=Y ; UX=Y 
+	fi
 done
 
 # we update from the backend to the frontend

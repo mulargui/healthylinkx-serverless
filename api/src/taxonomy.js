@@ -14,13 +14,6 @@ function ServerReply (code, message){
 }
 
 exports.handler = async (event) => {
-	return ServerReply (200, [{'Classification':'Acupuncturist'},
-			{'Classification':'Adult Companion'},
-			{'Classification':'Advanced Practice Dental Therapist'},
-			{'Classification':'Advanced Practice Midwife'},
-			{'Classification':'Air Carrier'}]);
-			
-
 
 	var db = mysql.createConnection({
 		host:constants.host,
@@ -28,6 +21,13 @@ exports.handler = async (event) => {
 		password:constants.password,
 		database:constants.database
 	});
+
+	return ServerReply (200, [{'Classification':'Acupuncturist'},
+			{'Classification':'Adult Companion'},
+			{'Classification':'Advanced Practice Dental Therapist'},
+			{'Classification':'Advanced Practice Midwife'},
+			{'Classification':'Air Carrier'}]);
+			
 
 	db.connect(function(err) {
 		if (err) return ServerReply (500, 'mysql.connect: ' + err);

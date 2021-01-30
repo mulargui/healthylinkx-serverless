@@ -3,20 +3,36 @@
 #global env variables
 . ./envparams.sh
 
-# set up the aws cli environment
-. $ROOT/.aws/aws-cli.sh
+# select which components to install
+UX=N
+API=N
+DS=N
+
+# you can also set the flags using the command line
+for var in "$@"
+do
+	if [ "UX" == "$var" ]; then UX=Y 
+	fi
+	if [ "API" == "$var" ]; then API=Y 
+	fi
+	if [ "DS" == "$var" ]; then DS=Y 
+	fi
+done
+
+# we uninstall from the frontend to the backend
 
 #uninstall UX
-if [ "$1" == "ux" ]; then
+if [ "${UX}" == "Y" ]; then
 	. $ROOT/ux/uninstall.sh
 fi
 
 #uninstall API
-if [ "$1" == "api" ]; then
+if [ "${API}" == "Y" ]; then
 	. $ROOT/api/uninstall.sh
 fi
 
-#uninstall the datastore 
-if [ "$1" == "ds" ]; then
+
+#uninstall datastore
+if [ "${DS}" == "Y" ]; then
 	. $ROOT/datastore/uninstall.sh
 fi

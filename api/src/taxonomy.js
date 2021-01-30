@@ -34,6 +34,10 @@ exports.handler = async (event) => {
 		database:constants.database
 	});
 
+	db.connect(function(err) {
+		if (err) return ServerReply (500, 'mysql.createConnection: ' + err);
+	});
+
 	var query = "SELECT * FROM taxonomy";
 	db.query(query, function(err,results,fields){		
 		if (err) return ServerReply (500, 'db.query failed! ' + query);

@@ -5,9 +5,7 @@ var dns = require('dns');
 var wait=require('wait.for');
 
 function ServerReply (code, message){
-	console.log ('code: ', code , 'message: ', message);
-
-	const response = {
+	return {
 		"statusCode": code,
 		"headers": {
 			"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
@@ -16,36 +14,23 @@ function ServerReply (code, message){
 		},
 		"body": JSON.stringify(message)
 	};
-	return response;
 }
 
 exports.handler = async (event) => {
-	var dbhost=constants.host;
-	/*try{
-		dbhost = wait.for(dns.lookup,constants.host);
-	} catch(err){
-		return ServerReply (500, 'No DNS resolution: ' + constants.host);
-	}*/
-
-	var db ;
-	try {
-		db = mysql.createConnection({
-			host:dbhost,
-			user:constants.user,
-			password:constants.password,
-			database:constants.database
-		});
-	} catch(err){
-		return ServerReply (500, 'mysql.createConnection: ' + err);
-	}
-	
+	var db = mysql.createConnection({
+		host:constants.host,
+		user:constants.user,
+		password:constants.password,
+		database:constants.database
+	});
+		
 	db.connect(function(err) {
-		if (err) return ServerReply (500, 'mysql.createConnection: ' + err);
+		if (err) return ServerReply (500, 'mysql.connect: ' + err);
 	});
 
 	var query = "SELECT * FROM taxonomy";
 	db.query(query, function(err,results,fields){		
-		if (err) return ServerReply (500, 'db.query failed! ' + query);
+		if (err) return ServerReply (500, 'db.query: ' + err);
 		return ServerReply (200, results);
 	});
 };

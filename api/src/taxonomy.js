@@ -1,8 +1,5 @@
-var mysql=require("mysql");
-var url = require("url");
 var constants = require("./constants.js");
-var dns = require('dns');
-var wait=require('wait.for');
+var mysql=require("mysql");
 
 function ServerReply (code, message){
 	return {

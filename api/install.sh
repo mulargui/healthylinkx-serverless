@@ -46,12 +46,6 @@ rm $ROOT/api/src/package-lock.json
 rm $ROOT/api/src/constants.js
 rm -r $ROOT/api/src/node_modules
 
-#create a IAM role under which the apigateway will access the lambda
-aws iam create-role --role-name healthylinkx-apigateway \
-	--assume-role-policy-document '{"Version": "2012-10-17","Statement": [{ "Sid":"", "Effect": "Allow", "Principal": {"Service": "apigateway.amazonaws.com"}, "Action": "sts:AssumeRole"}]}'
-#wait a few seconds till the role is created. otherwise there is an error creating the lambda
-sleep 10
-
 #create the REST apigateway
 aws apigateway create-rest-api --name healthylinkx
 APIID=$(aws apigateway get-rest-apis --query "items[?name==\`healthylinkx\`].id")

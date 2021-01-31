@@ -22,7 +22,10 @@ var db = mysql.createPool({
 
 exports.handler = async (event) => {
 	var query = "SELECT * FROM taxonomy";
-	const [rows,fields] = await db.query(query);
-	//if (err) return ServerReply (500, 'db.query: ' + err);
+	try {
+		const [rows,fields] = await db.query(query);
+	} catch(err) {
+		return ServerReply (500, 'db.query: ' + err);
+	}
 	return ServerReply (200, rows);
 };

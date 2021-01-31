@@ -13,7 +13,8 @@ function ServerReply (code, message){
 	};
 }
 
-var db = mysql.createConnection({
+//var db = mysql.createConnection({
+var db = mysql.createPool({
 	host:constants.host,
 	user:constants.user,
 	password:constants.password,
@@ -41,12 +42,12 @@ exports.handler = (event, context, callback) => {
 
 	context.callbackWaitsForEmptyEventLoop = false;
 
-	db.connect(function(err) {
+	db.getConnection(function(err) {
 		if (err)  callback(null, ServerReply (500, 'mysql.connect: ' + err));
 		
 		var query = "SELECT * FROM taxonomy";
 		db.query(query, function(err,results,fields){		
-			db.end();
+			db.release();
 			if (err) callback(null, ServerReply (500, 'db.query: ' + err));
 			callback(null, ServerReply (200, results));
 		});

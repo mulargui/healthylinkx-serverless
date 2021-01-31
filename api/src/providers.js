@@ -22,20 +22,20 @@ var db = mysql.createPool({
 });
 
 exports.handler = async (event) => {
-	return ServerReply (204, '#' + JSON.stringify(event)+'#');
+	//return ServerReply (204, '#' + JSON.stringify(event)+'#');
 	//return ServerReply (204, '#');
 
-/*
-	var gender = event.queryStringParameters.[gender];
-	var lastname1 = event.queryStringParameters.[lastname1];
-	var lastname2 = event.queryStringParameters.[lastname2];
-	var lastname3 = event.queryStringParameters.[lastname3];
-	var specialty = event.queryStringParameters.[specialty];
-	var distance = event.queryStringParameters.[distance];
-	var zipcode = event.queryStringParameters.[zipcode];
+
+	var gender = event.queryStringParameters.gender;
+	var lastname1 = event.queryStringParameters.lastname1;
+	var lastname2 = event.queryStringParameters.lastname2;
+	var lastname3 = event.queryStringParameters.lastname3;
+	var specialty = event.queryStringParameters.specialty;
+	var distance = event.queryStringParameters.distance;
+	var zipcode = event.queryStringParameters.zipcode;
  	
 	return ServerReply (204, '#' + gender + '#' + lastname1 + '#' + lastname2 
-		+'#' + lastname3 +'#' + specialty +'#' + distance + '#' + zipcode );*/
+		+'#' + lastname3 +'#' + specialty +'#' + distance + '#' + zipcode );
 	
  	//check params
  	if(!zipcode && !lastname1 && !specialty)

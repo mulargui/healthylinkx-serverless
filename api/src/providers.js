@@ -22,6 +22,9 @@ var db = mysql.createPool({
 });
 
 exports.handler = async (event) => {
+	return ServerReply (204, event);
+
+
 	var gender = event.queryStringParameters.[gender];
 	var lastname1 = event.queryStringParameters.[lastname1];
 	var lastname2 = event.queryStringParameters.[lastname2];

@@ -30,10 +30,3 @@ exports.handler = async (event) => {
 	}
 };
 
-/*
-exports.handler = async (event) => {
-	var query = "SELECT * FROM taxonomy";
-	const [rows,fields] = await db.query(query);
-	return ServerReply (200, rows);
-};
-*/

@@ -13,7 +13,7 @@ function ServerReply (code, message){
 	};
 }
 
-var db = await mysql.createPool({
+var db = mysql.createPool({
 	host:constants.host,
 	user:constants.user,
 	password:constants.password,

@@ -33,9 +33,6 @@ exports.handler = async (event) => {
 	var distance = event.queryStringParameters.distance;
 	var zipcode = event.queryStringParameters.zipcode;
  	
-	return ServerReply (204, '#' + gender + '#' + lastname1 + '#' + lastname2 
-		+'#' + lastname3 +'#' + specialty +'#' + distance + '#' + zipcode );
-	
  	//check params
  	if(!zipcode && !lastname1 && !specialty)
 		return ServerReply (204, 'providers: not enought params!');

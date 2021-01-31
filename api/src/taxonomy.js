@@ -20,25 +20,20 @@ var db = mysql.createPool({
 	database:constants.database
 });
 
-/*
 exports.handler = async (event) => {
 	var query = "SELECT * FROM taxonomy";
 	try {
 		const [rows,fields] = await db.query(query);
+		return ServerReply (200, rows);
 	} catch(err) {
 		return ServerReply (500, 'db.query: ' + err);
 	}
+};
+
+/*
+exports.handler = async (event) => {
+	var query = "SELECT * FROM taxonomy";
+	const [rows,fields] = await db.query(query);
 	return ServerReply (200, rows);
 };
 */
-
-exports.handler = async (event) => {
-	var query = "SELECT * FROM taxonomy";
-	var [rows,fields];
-	try {
-		[rows,fields] = await db.query(query);
-	} catch(err) {
-		return ServerReply (500, 'db.query: ' + err);
-	}
-	return ServerReply (200, rows);
-};

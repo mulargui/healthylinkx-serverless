@@ -22,7 +22,7 @@ var db = mysql.createPool({
 
 exports.handler = async (event) => {
 	if (!event.queryStringParameters)
-		return ServerReply (204, 'shortlist: no NPI requested');
+		return ServerReply (204, '{"shortlist": "no NPI requested"}');
 
 	var npi1 = event.queryStringParameters.npi1;
 	var npi2 = event.queryStringParameters.npi2;
@@ -31,7 +31,7 @@ exports.handler = async (event) => {
 	//save the selection
 	var query = "INSERT INTO transactions VALUES (DEFAULT,DEFAULT,'"+ npi1 +"','"+ npi2 +"','"+npi3 +"')";
 	try {
-		const [rows,fields] = await db.query(query);
+		[rows,fields] = await db.query(query);
 		
 		//keep the transaction number
 		var transactionid= rows.insertId;
@@ -42,7 +42,7 @@ exports.handler = async (event) => {
 		if(npi3) query += "OR (NPI = '"+npi3+"')";
 		query += ")";
 		
-		const [rows,fields] = await db.query(query);
+		[rows,fields] = await db.query(query);
 		var info=[{Transaction: transactionid}];
 		info.push(rows);
 		return ServerReply (200, info);

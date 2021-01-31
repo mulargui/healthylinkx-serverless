@@ -1,13 +1,8 @@
-var mysql=require("mysql");
-var url = require("url");
 var constants = require("./constants.js");
-var dns = require('dns');
-var wait=require('wait.for');
+const mysql = require('mysql2/promise');
 
 function ServerReply (code, message){
-	console.log ('code: ', code , 'message: ', message);
-
-	const response = {
+	return {
 		"statusCode": code,
 		"headers": {
 			"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
@@ -16,45 +11,42 @@ function ServerReply (code, message){
 		},
 		"body": JSON.stringify(message)
 	};
-	return response;
 }
 
-exports.handler = async (event) => {
-	var npi1 = event.queryStringParameters.[NPI1];
-	var npi2 = event.queryStringParameters.[NPI2];
-	var npi3 = event.queryStringParameters.[NPI3];
+var db = mysql.createPool({
+	host:constants.host,
+	user:constants.user,
+	password:constants.password,
+	database:constants.database
+});
 
- 	//check params
- 	if(!npi1) return ServerReply (204, 'no NPI request');
-	
-	//connect to the DB
-	var db = mysql.createConnection({
-		host:dbhost,
-		user:constants.user,
-		password:constants.password,
-		database:constants.database
-	});
+exports.handler = async (event) => {
+	if (!event.queryStringParameters)
+		return ServerReply (204, 'shortlist: no NPI requested');
+
+	var npi1 = event.queryStringParameters.npi1;
+	var npi2 = event.queryStringParameters.npi2;
+	var npi3 = event.queryStringParameters.npi3;
 
 	//save the selection
 	var query = "INSERT INTO transactions VALUES (DEFAULT,DEFAULT,'"+ npi1 +"','"+ npi2 +"','"+npi3 +"')";
- 	db.query(query, function(err,results,fields){		
-		if (err) return ServerReply (500, 'db.query failed! ' + query);
-
+	try {
+		const [rows,fields] = await db.query(query);
+		
 		//keep the transaction number
-		var transactionid= results.insertId;
+		var transactionid= rows.insertId;
 			
 		//return detailed data of the selected providers
 		query = "SELECT NPI,Provider_Full_Name,Provider_Full_Street, Provider_Full_City, Provider_Business_Practice_Location_Address_Telephone_Number FROM npidata2 WHERE ((NPI = '"+npi1+"')";
 		if(npi2) query += "OR (NPI = '"+npi2+"')";
 		if(npi3) query += "OR (NPI = '"+npi3+"')";
 		query += ")";
-
- 		db.query(query, function(err,results,fields){		
-			if (err) return ServerReply (500, 'db.query failed! ' + query);
-			
-			var info=[{Transaction: transactionid}];
-			info.push(results);
-			return ServerReply (200, info);
-		});
-	});
+		
+		const [rows,fields] = await db.query(query);
+		var info=[{Transaction: transactionid}];
+		info.push(rows);
+		return ServerReply (200, info);
+	} catch(err) {
+		return ServerReply (500, 'db.query: ' + query + err);
+	}
 };

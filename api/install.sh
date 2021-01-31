@@ -39,9 +39,19 @@ aws lambda create-function \
 	--role arn:aws:iam::$AWS_ACCOUNT_ID:role/healthylinkx-lambda \
 	--zip-file fileb://$ROOT/api/src/providers.zip
 
+#package the shortlist code
+(cd $ROOT/api/src; zip -r shortlist.zip shortlist.js constants.js package-lock.json node_modules)
+
+#creating a shortlist lambda with the package
+aws lambda create-function \
+	--function-name shortlist \
+	--runtime nodejs12.x \
+	--handler shortlist.handler \
+	--role arn:aws:iam::$AWS_ACCOUNT_ID:role/healthylinkx-lambda \
+	--zip-file fileb://$ROOT/api/src/shortlist.zip
+
 # cleanup
-rm $ROOT/api/src/taxonomy.zip
-rm $ROOT/api/src/providers.zip
+rm $ROOT/api/src/*.zip
 rm $ROOT/api/src/package-lock.json
 rm $ROOT/api/src/constants.js
 rm -r $ROOT/api/src/node_modules
@@ -83,8 +93,21 @@ aws apigateway put-integration --rest-api-id $APIID --resource-id $RESOURCEID \
 #allow apigateway to call the lambda
 aws lambda add-permission --function-name providers --action lambda:InvokeFunction --statement-id api-lambda --principal apigateway.amazonaws.com
 
-#enable CORS
-#aws apigatewayv2 update-api --api-id $APIID --cors-configuration AllowOrigins="*"
+#create the resource (shortlist)
+aws apigateway create-resource --rest-api-id $APIID --parent-id $PARENTRESOURCEID --path-part shortlist
+RESOURCEID=$(aws apigateway get-resources --rest-api-id ${APIID} --query "items[?path=='/shortlist'].id")
+
+#create the method (GET)
+aws apigateway put-method --rest-api-id $APIID --resource-id $RESOURCEID --http-method GET --authorization-type NONE
+
+#link the lambda to the method
+LAMBDAARN=$(aws lambda list-functions --query "Functions[?FunctionName==\`shortlist\`].FunctionArn")  
+aws apigateway put-integration --rest-api-id $APIID --resource-id $RESOURCEID \
+    --http-method GET --type AWS_PROXY --integration-http-method POST \
+    --uri arn:aws:apigateway:$AWS_REGION:lambda:path/2015-03-31/functions/${LAMBDAARN}/invocations
+
+#allow apigateway to call the lambda
+aws lambda add-permission --function-name shortlist --action lambda:InvokeFunction --statement-id api-lambda --principal apigateway.amazonaws.com
 
 #deploy all
 aws apigateway create-deployment --rest-api-id $APIID --stage-name prod

@@ -21,9 +21,14 @@ aws lambda update-function-code --function-name taxonomy --zip-file fileb://$ROO
 #updating the lambda code
 aws lambda update-function-code --function-name providers --zip-file fileb://$ROOT/api/src/providers.zip
 
+#package the code (shortlist)
+(cd $ROOT/api/src; zip -r shortlist.zip shortlist.js constants.js package-lock.json node_modules)
+
+#updating the lambda code
+aws lambda update-function-code --function-name shortlist --zip-file fileb://$ROOT/api/src/shortlist.zip
+
 # cleanup
-rm $ROOT/api/src/taxonomy.zip
-rm $ROOT/api/src/providers.zip
+rm $ROOT/api/src/*.zip
 rm $ROOT/api/src/package-lock.json
 rm $ROOT/api/src/constants.js
 rm -r $ROOT/api/src/node_modules

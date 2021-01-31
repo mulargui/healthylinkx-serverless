@@ -13,28 +13,29 @@ function ServerReply (code, message){
 	};
 }
 
-exports.handler = async (event) => {
+var db = mysql.createConnection({
+	host:constants.host,
+	user:constants.user,
+	password:constants.password,
+	database:constants.database
+});
 
-	var db = mysql.createConnection({
-		host:constants.host,
-		user:constants.user,
-		password:constants.password,
-		database:constants.database
-	});
+//exports.handler = (event, context, callback) => {
+
+	//context.callbackWaitsForEmptyEventLoop = false;
+exports.handler = async (event) => {
 
 	db.connect(function(err) {
 		if (err) return ServerReply (500, 'mysql.connect: ' + err);
+		
+		var query = "SELECT * FROM taxonomy";
+		db.query(query, function(err,results,fields){		
+			db.end();
+			if (err) return ServerReply (500, 'db.query: ' + err);
+			return ServerReply (200, 'success!');
+		});
+
 	});
 
-	var query = "SELECT * FROM taxonomy";
-	db.query(query, function(err,results,fields){		
-		if (err) return ServerReply (500, 'db.query: ' + err);
-		return ServerReply (200, [{'Classification':'Acupuncturist'},
-			{'Classification':'Adult Companion'},
-			{'Classification':'Advanced Practice Dental Therapist'},
-			{'Classification':'Advanced Practice Midwife'},
-			{'Classification':'Air Carrier'}]);
-	});
-			return ServerReply (500, 'never here');
-
+	//return ServerReply (500, 'never here');
 };

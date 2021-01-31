@@ -22,7 +22,8 @@ var db = mysql.createPool({
 });
 
 exports.handler = async (event) => {
-	return ServerReply (204, '#' + JSON.stringify(event)+'#');
+	//return ServerReply (204, '#' + JSON.stringify(event)+'#');
+	return ServerReply (204, '#');
 
 /*
 	var gender = event.queryStringParameters.[gender];

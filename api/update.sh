@@ -7,16 +7,23 @@ sed -i "s/YYYYYYYYYY/$DBUSER/" $ROOT/api/src/constants.js
 sed -i "s/XXXXXXXXXX/$DBPWD/" $ROOT/api/src/constants.js
 
 # install node dependencies
-(cd $ROOT/api/src; npm install mysql2 )
+(cd $ROOT/api/src; npm install mysql2 http)
 
-#package the code
+#package the code (taxonomy)
 (cd $ROOT/api/src; zip -r taxonomy.zip taxonomy.js constants.js package-lock.json node_modules)
 
 #updating the lambda code
 aws lambda update-function-code --function-name taxonomy --zip-file fileb://$ROOT/api/src/taxonomy.zip
 
+#package the code (providers)
+(cd $ROOT/api/src; zip -r providers.zip providers.js constants.js package-lock.json node_modules)
+
+#updating the lambda code
+aws lambda update-function-code --function-name providers --zip-file fileb://$ROOT/api/src/providers.zip
+
 # cleanup
 rm $ROOT/api/src/taxonomy.zip
+rm $ROOT/api/src/providers.zip
 rm $ROOT/api/src/package-lock.json
 rm $ROOT/api/src/constants.js
 rm -r $ROOT/api/src/node_modules

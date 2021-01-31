@@ -7,8 +7,9 @@ aws apigateway delete-rest-api --rest-api-id $APIID
 #delete the IAM role used by the apigateway
 aws iam delete-role --role-name healthylinkx-apigateway 
 
-#delete the lambda function
+#delete the lambda functions
 aws lambda delete-function --function-name taxonomy
+aws lambda delete-function --function-name providers
 	
 #delete the IAM role used by the lambda
 aws iam delete-role --role-name healthylinkx-lambda 

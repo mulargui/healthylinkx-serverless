@@ -1,13 +1,9 @@
-var mysql=require("mysql");
-var url = require("url");
 var constants = require("./constants.js");
-var dns = require('dns');
-var wait=require('wait.for');
+const mysql = require('mysql2/promise');
+var http = require("http");
 
 function ServerReply (code, message){
-	console.log ('code: ', code , 'message: ', message);
-
-	const response = {
+	return {
 		"statusCode": code,
 		"headers": {
 			"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
@@ -16,9 +12,14 @@ function ServerReply (code, message){
 		},
 		"body": JSON.stringify(message)
 	};
-	return response;
 }
 
+var db = mysql.createPool({
+	host:constants.host,
+	user:constants.user,
+	password:constants.password,
+	database:constants.database
+});
 
 exports.handler = async (event) => {
 	var gender = event.queryStringParameters.[gender];
@@ -29,18 +30,13 @@ exports.handler = async (event) => {
 	var distance = event.queryStringParameters.[distance];
 	var zipcode = event.queryStringParameters.[zipcode];
  	
+	return ServerReply (204, '#' + gender + '#' + lastname1 + '#' + lastname2 
+		+'#' + lastname3 +'#' + specialty +'#' + distance + '#' + zipcode );
+	
  	//check params
  	if(!zipcode && !lastname1 && !specialty)
 		return ServerReply (204, 'not enought params!');
 	
-	//connect to the DB
-	var db = mysql.createConnection({
-		host:dbhost,
-		user:constants.user,
-		password:constants.password,
-		database:constants.database
-	});
-
  	var query = "SELECT NPI,Provider_Full_Name,Provider_Full_Street,Provider_Full_City FROM npidata2 WHERE (";
  	if(lastname1)
  		query += "((Provider_Last_Name_Legal_Name = '" + lastname1 + "')";
@@ -62,7 +58,7 @@ exports.handler = async (event) => {
  			query += "(Classification = '" + specialty + "')";
 
  	//case 1: no need to calculate zip codes at a distance
- 	if (!distance || !zipcode){
+ 	//if (!distance || !zipcode){
  		if(zipcode)
  			if(lastname1 || gender || specialty)
  				query += " AND (Provider_Short_Postal_Code = '"+ zipcode + "')";
@@ -70,13 +66,14 @@ exports.handler = async (event) => {
  				query += "(Provider_Short_Postal_Code = '" + zipcode + "')";
 		query += ") limit 50";
  		
-		db.query(query, function(err,results,fields){		
-			if (err) return ServerReply (500, 'db.query failed! ' + query);
-			return ServerReply(200, results);
-		});
-		return;
-	}
-
+		try {
+			const [rows,fields] = await db.query(query);
+			return ServerReply (200, rows);
+		} catch(err) {
+			return ServerReply (500, 'db.query: ' + query + err);
+		}
+	//}
+/*
  	//case 2:we need to find zipcodes at a distance
 
  	//lets get a few zipcodes
@@ -88,7 +85,7 @@ exports.handler = async (event) => {
   		path: queryapi
  	};
 
-	var req = require("http").request(options, function(res) {
+	http.request(options, function(res) {
 		res.setEncoding('utf8');
 		res.on('data', function (chunk) {
 			responsestring += chunk;
@@ -122,5 +119,5 @@ exports.handler = async (event) => {
 				return ServerReply(200, results);
 			});
 		});
-	}).end();		
+	}).end();*/		
 }; 

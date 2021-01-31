@@ -1,5 +1,5 @@
 var constants = require("./constants.js");
-var mysql=require("mysql");
+const mysql = require('mysql2/promise');
 
 function ServerReply (code, message){
 	return {
@@ -13,46 +13,16 @@ function ServerReply (code, message){
 	};
 }
 
-//var db = mysql.createConnection({
-var db = mysql.createPool({
+var db = await mysql.createPool({
 	host:constants.host,
 	user:constants.user,
 	password:constants.password,
 	database:constants.database
 });
 
-/*exports.handler = async (event) => {
-
-	db.connect(function(err) {
-		if (err) return ServerReply (500, 'mysql.connect: ' + err);
-		
-		var query = "SELECT * FROM taxonomy";
-		db.query(query, function(err,results,fields){		
-			db.end();
-			if (err) return ServerReply (500, 'db.query: ' + err);
-			return ServerReply (200, results);
-		});
-
-	});
-
-	return ServerReply (500, 'never here');
-};*/
-
-exports.handler = (event, context, callback) => {
-
-	context.callbackWaitsForEmptyEventLoop = false;
-
-	db.getConnection(function(err) {
-		if (err)  callback(null, ServerReply (500, 'mysql.connect: ' + err));
-		
-		var query = "SELECT * FROM taxonomy";
-		db.query(query, function(err,results,fields){		
-			db.release();
-			if (err) callback(null, ServerReply (500, 'db.query: ' + err));
-			callback(null, ServerReply (200, results));
-		});
-
-	});
-
-	callback(null, ServerReply (500, 'never here'));
+exports.handler = async (event) => {
+	var query = "SELECT * FROM taxonomy";
+	const [rows,fields] await db.query(query);
+	//if (err) return ServerReply (500, 'db.query: ' + err);
+	return ServerReply (200, rows);
 };

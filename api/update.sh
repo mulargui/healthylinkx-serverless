@@ -7,7 +7,7 @@ sed -i "s/YYYYYYYYYY/$DBUSER/" $ROOT/api/src/constants.js
 sed -i "s/XXXXXXXXXX/$DBPWD/" $ROOT/api/src/constants.js
 
 # install node dependencies
-(cd $ROOT/api/src; npm install mysql )
+(cd $ROOT/api/src; npm install mysql2 )
 
 #package the code
 (cd $ROOT/api/src; zip -r taxonomy.zip taxonomy.js constants.js package-lock.json node_modules)

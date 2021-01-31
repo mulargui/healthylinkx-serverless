@@ -32,10 +32,10 @@ exports.handler = async (event) => {
 		db.query(query, function(err,results,fields){		
 			db.end();
 			if (err) return ServerReply (500, 'db.query: ' + err);
-			return ServerReply (200, 'success!');
+			return ServerReply (200, results);
 		});
 
 	});
 
-	//return ServerReply (500, 'never here');
+	return ServerReply (500, 'never here');
 };

@@ -1,5 +1,7 @@
 #!/bin/bash -x
 
+# used to run test commands in the same environment than the install scripts
+
 #global env variables
 . ./envparams.sh
 

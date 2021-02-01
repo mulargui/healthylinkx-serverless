@@ -139,7 +139,7 @@ function showShortProviderList(){
 		} else {
 			showMessage('No matching providers were found.');
 		}
-	)
+	})
 	.fail(function(jqxhr, textStatus, error ) {
 		var err = textStatus + ", " + error;
 		showMessage(err);

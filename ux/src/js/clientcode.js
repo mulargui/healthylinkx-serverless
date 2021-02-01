@@ -122,8 +122,7 @@ function showShortProviderList(){
 	}
 
 	$('#shortresultsTable tbody').empty();
-	$.getJSON(requeststring)
-	.success (function(data){
+	$.getJSON(requeststring, function(data){
 		if (data!=null) {
 			$.each(data, function(i, item) {
 				if ("Transaction" in item){
@@ -142,9 +141,6 @@ function showShortProviderList(){
 		} else {
 			showMessage('No matching providers were found.');
 		}
-	})
-	.error(function(error){
- 		showMessage(error);
 	});		
 }
 

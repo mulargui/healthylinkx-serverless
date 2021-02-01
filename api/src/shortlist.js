@@ -46,9 +46,10 @@ exports.handler = async (event) => {
 		
 		//var info=[{Transaction: transactionid}];
 		//info.push(rows);
-		var info={"Transaction": JSON.stringify(transactionid), "providers": rows};
+		//var info={"Transaction": transactionid, "providers": rows};
+		var info={"providers": rows};
 
-		return ServerReply (200, rows);
+		return ServerReply (200, info);
 	} catch(err) {
 		return ServerReply (500, 'db.query: ' + query + err);
 	}

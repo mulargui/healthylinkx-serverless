@@ -126,15 +126,14 @@ function showShortProviderList(){
 	.done(function(data){
 		if (data!=null) {
 			$.each(data.providers, function(i, item) {
-					$.each(item, function(j, provider) {
-						var row = "<TR>";
-						$.each(provider, function(k, field) {
-							row +='<TD>'+field+'</TD>'; 
-						});
-						row+='</TR>';
-						$('#shortresultsTable tbody').append(row);
+				$.each(item, function(j, provider) {
+					var row = "<TR>";
+					$.each(provider, function(k, field) {
+						row +='<TD>'+field+'</TD>'; 
 					});
-				}
+					row+='</TR>';
+					$('#shortresultsTable tbody').append(row);
+				});
 			})
 			$('#shortresultsTable tbody').append('<TR>'+'<TD>'+'<strong>'+"Transaction number: "+'</strong>'+data.Transaction+'</TD>'+'</TR>');
 		} else {

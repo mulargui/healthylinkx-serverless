@@ -125,10 +125,7 @@ function showShortProviderList(){
 	$.getJSON(requeststring)
 	.done(function(data){
 		if (data!=null) {
-			$.each(data, function(i, item) {
-				if ("Transaction" in item){
-					$('#shortresultsTable tbody').append('<TR>'+'<TD>'+'<strong>'+"Transaction number: "+'</strong>'+item.Transaction+'</TD>'+'</TR>');
-				}else{
+			$.each(data.providers, function(i, item) {
 					$.each(item, function(j, provider) {
 						var row = "<TR>";
 						$.each(provider, function(k, field) {
@@ -139,9 +136,11 @@ function showShortProviderList(){
 					});
 				}
 			})
+			$('#shortresultsTable tbody').append('<TR>'+'<TD>'+'<strong>'+"Transaction number: "+'</strong>'+data.Transaction+'</TD>'+'</TR>');
 		} else {
 			showMessage('No matching providers were found.');
 		}
+	)
 	.fail(function(jqxhr, textStatus, error ) {
 		var err = textStatus + ", " + error;
 		showMessage(err);

@@ -122,7 +122,8 @@ function showShortProviderList(){
 	}
 
 	$('#shortresultsTable tbody').empty();
-	$.getJSON(requeststring,function(data){
+	$.getJSON(requeststring)
+	.success (function(data){
 		if (data!=null) {
 			$.each(data, function(i, item) {
 				if ("Transaction" in item){
@@ -137,11 +138,14 @@ function showShortProviderList(){
 						$('#shortresultsTable tbody').append(row);
 					});
 				}
-			});
+			})
 		} else {
 			showMessage('No matching providers were found.');
 		}
-	});
+	})
+	.error(function(error){
+ 		showMessage(error);
+	});		
 }
 
 function loadTaxonomyCodes() {

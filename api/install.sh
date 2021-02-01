@@ -50,6 +50,17 @@ aws lambda create-function \
 	--role arn:aws:iam::$AWS_ACCOUNT_ID:role/healthylinkx-lambda \
 	--zip-file fileb://$ROOT/api/src/shortlist.zip
 
+#package the transaction code
+(cd $ROOT/api/src; zip -r transaction.zip transaction.js constants.js package-lock.json node_modules)
+
+#creating a transaction lambda with the package
+aws lambda create-function \
+	--function-name transaction \
+	--runtime nodejs12.x \
+	--handler transaction.handler \
+	--role arn:aws:iam::$AWS_ACCOUNT_ID:role/healthylinkx-lambda \
+	--zip-file fileb://$ROOT/api/src/transaction.zip
+
 # cleanup
 rm $ROOT/api/src/*.zip
 rm $ROOT/api/src/package-lock.json

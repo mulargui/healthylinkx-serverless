@@ -27,6 +27,12 @@ aws lambda update-function-code --function-name providers --zip-file fileb://$RO
 #updating the lambda code
 aws lambda update-function-code --function-name shortlist --zip-file fileb://$ROOT/api/src/shortlist.zip
 
+#package the code (transaction)
+(cd $ROOT/api/src; zip -r transaction.zip transaction.js constants.js package-lock.json node_modules)
+
+#updating the lambda code
+aws lambda update-function-code --function-name transaction --zip-file fileb://$ROOT/api/src/transaction.zip
+
 # cleanup
 rm $ROOT/api/src/*.zip
 rm $ROOT/api/src/package-lock.json

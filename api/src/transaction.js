@@ -1,13 +1,8 @@
-var mysql=require("mysql");
-var url = require("url");
 var constants = require("./constants.js");
-var dns = require('dns');
-var wait=require('wait.for');
+const mysql = require('mysql2/promise');
 
 function ServerReply (code, message){
-	console.log ('code: ', code , 'message: ', message);
-
-	const response = {
+	return {
 		"statusCode": code,
 		"headers": {
 			"Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
@@ -16,34 +11,35 @@ function ServerReply (code, message){
 		},
 		"body": JSON.stringify(message)
 	};
-	return response;
 }
 
+var db = mysql.createPool({
+	host:constants.host,
+	user:constants.user,
+	password:constants.password,
+	database:constants.database
+});
+
 exports.handler = async (event) => {
-	var id = event.queryStringParameters.[id];
+	if (!event.queryStringParameters)
+		return ServerReply (204, 'shortlist: no transaction id');
+
+	var id = event.queryStringParameters.id;
 
  	//check params
- 	if(!id) return ServerReply (204, 'no transaction id');
+ 	if(!id) return ServerReply (204, 'shortlist: no transaction id');
 	
-	//connect to the DB
-	var db = mysql.createConnection({
-		host:dbhost,
-		user:constants.user,
-		password:constants.password,
-		database:constants.database
-	});
-
 	//retrieve the providers
 	var query = "SELECT * FROM transactions WHERE (id = '"+id+"')";
-	db.query(query, function(err,results,fields){		
-		if (err) return ServerReply (500, 'db.query failed! ' + query);
+	try {
+		[rows,fields] = await db.query(query);
 
-		if (results.length <= 0) return ServerReply (204, 'no providers for transaction: ' + id);
+		if (rows.length <= 0) return ServerReply (204, 'no providers for transaction: ' + id);
 
 		//get the providers
-		var npi1 = results[0].NPI1;
-		var npi2 = results[0].NPI2;
-		var npi3 = results[0].NPI3;
+		var npi1 = rows[0].NPI1;
+		var npi2 = rows[0].NPI2;
+		var npi3 = rows[0].NPI3;
 	
 		//get the details of the providers
 		query = "SELECT NPI,Provider_Full_Name,Provider_Full_Street, Provider_Full_City, Provider_Business_Practice_Location_Address_Telephone_Number FROM npidata2 WHERE ((NPI = '"+npi1+"')";
@@ -51,9 +47,10 @@ exports.handler = async (event) => {
 		if(npi3) query += "OR (NPI = '"+npi3+"')";
 		query += ")";
 
- 		db.query(query, function(err,results,fields){		
-			if (err) return ServerReply (500, 'db.query failed! ' + query);
-			return ServerReply(200, results);
-		});
-	});
+		[rows,fields] = await db.query(query);
+		
+		return ServerReply(200, rows);
+	} catch(err) {
+		return ServerReply (500, 'db.query: ' + query + err);
+	}
 }; 

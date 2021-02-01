@@ -8,6 +8,7 @@ aws apigateway delete-rest-api --rest-api-id $APIID
 aws lambda delete-function --function-name taxonomy
 aws lambda delete-function --function-name providers
 aws lambda delete-function --function-name shortlist
-	
+aws lambda delete-function --function-name transaction
+
 #delete the IAM role used by the lambda
 aws iam delete-role --role-name healthylinkx-lambda 

@@ -14,3 +14,8 @@ export ROOT=`pwd`
 #datastore user
 export DBUSER=user
 export DBPWD=123456
+
+#zipcodes locator
+#we use this API to find zipcodes at a distance. Visit http://www.zipcodeapi.com/ to know more and get a test token
+export ZIPCODEAPI=zipcodedistanceapi.redline13.com
+export ZIPCODETOKEN=111111111111111111111111111111111111111111111111111111

@@ -1,6 +1,6 @@
-var constants = require("./constants.js");
+const constants = require("./constants.js");
 const mysql = require('mysql2/promise');
-var http = require('http');
+const http = require('http');
 
 function ServerReply (code, message){
 	return {
@@ -58,6 +58,7 @@ exports.handler = async (event) => {
  			query += "(Classification = '" + specialty + "')";
 
  	//case 1: no need to calculate zip codes at a distance
+ 	if (!distance || !zipcode){
  		if(zipcode)
  			if(lastname1 || gender || specialty)
  				query += " AND (Provider_Short_Postal_Code = '"+ zipcode + "')";
@@ -71,4 +72,54 @@ exports.handler = async (event) => {
 		} catch(err) {
 			return ServerReply (500, {"error": query + '#' + err});
 		}
+	}
+	
+ 	//case 2:we need to find zipcodes at a distance
+
+ 	//lets get a few zipcodes
+ 	var queryapi = "/rest/" + constants.zipcodetoken + "/" + zipcode + "/" + distance + "/mile";
+	var responsestring="";
+
+	var options = {
+  		host: constants.zipcodeapi,
+  		path: queryapi
+ 	};
+
+	http.request(options, function(res) {
+		res.setEncoding('utf8');
+		res.on('data', function (chunk) {
+			responsestring += chunk;
+		});
+
+		res.on('error', function(err) {
+			return ServerReply (500, {"error": constants.zipcodetoken + '#' + err});
+		});	
+
+		res.on('end', function() {
+
+			//no data
+  			if (!responsestring) return ServerReply (204, {"error": "no zipcodes!"});
+
+		 	//translate json from string to array
+			var responsejson = JSON.parse(responsestring);
+			var length=responsejson.zip_codes.length;
+
+			//complete the query
+ 			if(lastname1 || gender || specialty)
+ 				query += " AND ((Provider_Short_Postal_Code = '"+responsejson.zip_codes[0].zip_code+"')";
+ 			else
+ 				query += "((Provider_Short_Postal_Code = '"+responsejson.zip_codes[0].zip_code+"')";
+			for (var i=1; i<length;i++){
+ 				query += " OR (Provider_Short_Postal_Code = '"+ responsejson.zip_codes[i].zip_code +"')";
+			}
+  			query += ")) limit 50";
+
+			try {
+				const [rows,fields] = await db.query(query);
+				return ServerReply (200, rows);
+			} catch(err) {
+				return ServerReply (500, {"error": query + '#' + err});
+			}
+		});
+	}).end();
 }; 

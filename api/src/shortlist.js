@@ -24,9 +24,9 @@ exports.handler = async (event) => {
 	if (!event.queryStringParameters)
 		return ServerReply (204, {"error": "no NPI requested"});
 
-	var npi1 = event.queryStringParameters.npi1;
-	var npi2 = event.queryStringParameters.npi2;
-	var npi3 = event.queryStringParameters.npi3;
+	var npi1 = event.queryStringParameters.NPI1;
+	var npi2 = event.queryStringParameters.NPI2;
+	var npi3 = event.queryStringParameters.NPI3;
 
 	//save the selection
 	var query = "INSERT INTO transactions VALUES (DEFAULT,DEFAULT,'"+ npi1 +"','"+ npi2 +"','"+npi3 +"')";

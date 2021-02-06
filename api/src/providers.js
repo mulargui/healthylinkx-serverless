@@ -83,8 +83,7 @@ exports.handler = async (event) => {
 
 	try {
 		const response = await axios.get(queryapi);
-		return ServerReply (200, response.data);
-		//responsestring=response.data.explanation;
+		responsestring=response.data;
 	} catch (err) {
 		return ServerReply (500, {"error": queryapi + ':' + err});
 	}

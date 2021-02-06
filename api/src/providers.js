@@ -82,7 +82,7 @@ exports.handler = async (event) => {
 	var responsestring="";
 
 	try {
-		const response = await axios.get('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY')
+		const response = await axios.get(queryapi);
 		responsestring=response.data.explanation;
 	} catch (err) {
 		return ServerReply (500, {"error": constants.zipcodetoken + ':' + err});

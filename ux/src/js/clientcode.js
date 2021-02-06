@@ -139,8 +139,7 @@ function showShortProviderList(){
 		}
 	})
 	.fail(function(jqxhr, textStatus, error ) {
-		var err = textStatus + ", " + error;
-		showMessage(err);
+		showMessage(textStatus + ", " + error);
 	});		
 }
 

@@ -26,7 +26,7 @@ exports.handler = async (event) => {
 		const [rows,fields] = await db.query(query);
 		return ServerReply (200, rows);
 	} catch(err) {
-		return ServerReply (500, 'db.query: ' + err);
+		return ServerReply (500, {"error": query + '#' + err});
 	}
 };
 

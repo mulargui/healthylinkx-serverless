@@ -69,22 +69,20 @@ function showSearchResults() {
 
 	$('#resultsTable tbody').empty();
 	$.getJSON(requeststring,function(data){
-		if (data!=null) {
-			$.each(data, function(i, item) {
-				var row = "<TR>";
-				$.each(item, function(j, field) {
-					if (j=="NPI") {
-						row += "<TD><input type=\"checkbox\" id=\"" + field + "\"></TD>";
-					}else {
-						row +='<TD>'+field+'</TD>'; 
-					}
-				});
-				row+='</TR>';
-				$('#resultsTable tbody').append(row);
+		if (data==null) return showMessage('No matching providers were found.');
+		
+		$.each(data, function(i, item) {
+			var row = "<TR>";
+			$.each(item, function(j, field) {
+				if (j=="NPI") {
+					row += "<TD><input type=\"checkbox\" id=\"" + field + "\"></TD>";
+				}else {
+					row +='<TD>'+field+'</TD>'; 
+				}
 			});
-		} else {
-			showMessage('No matching providers were found.');
-		}
+			row+='</TR>';
+			$('#resultsTable tbody').append(row);
+		});
 	});
 }
 
@@ -94,16 +92,12 @@ function showShortProviderList(){
 	    selectedNPIs.push($(this).attr('id'));
     });
 
-	if (selectedNPIs.length==0) {
-		showMessage('No providers were selected.');
-		return;
-	}
+	if (selectedNPIs.length==0)
+		return showMessage('No providers were selected.');
 
 	var len= selectedNPIs.length;
-	if (len >3) {
-		showMessage('Too many providers were selected, maximum is three.');
-		return;
-	}
+	if (len >3) 
+		return showMessage('Too many providers were selected, maximum is three.');
 
 	var requeststring = API_URL_PREFIX+"shortlist";
 	var firstparam = true;
@@ -124,19 +118,17 @@ function showShortProviderList(){
 	$('#shortresultsTable tbody').empty();
 	$.getJSON(requeststring)
 	.done(function(data){
-		if (data!=null) {
-			$.each(data.providers, function(i, provider) {
-				var row = "<TR>";
-				$.each(provider, function(k, field) {
-					row +='<TD>'+field+'</TD>'; 
-				});
-				row+='</TR>';
-				$('#shortresultsTable tbody').append(row);
+		if (data==null) return showMessage('No matching providers were found.');
+
+		$.each(data.providers, function(i, provider) {
+			var row = "<TR>";
+			$.each(provider, function(k, field) {
+				row +='<TD>'+field+'</TD>'; 
 			});
-			$('#shortresultsTable tbody').append('<TR>'+'<TD>'+'<strong>'+"Transaction number: "+'</strong>'+data.Transaction+'</TD>'+'</TR>');
-		} else {
-			showMessage('No matching providers were found.');
-		}
+			row+='</TR>';
+			$('#shortresultsTable tbody').append(row);
+		});
+		$('#shortresultsTable tbody').append('<TR>'+'<TD>'+'<strong>'+"Transaction number: "+'</strong>'+data.Transaction+'</TD>'+'</TR>');
 	})
 	.fail(function(jqxhr, textStatus, error ) {
 		showMessage(textStatus + ", " + error);
@@ -153,8 +145,7 @@ function loadTaxonomyCodes() {
 		$("#specialty").autocomplete({source: taxonomyTags});
 	})
 	.fail(function(jqxhr, textStatus, error ) {
-		var err = textStatus + ", " + error;
-		showMessage(err);
+		showMessage(textStatus + ", " + error);
 	});
 }
 

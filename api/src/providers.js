@@ -23,7 +23,7 @@ var db = mysql.createPool({
 
 exports.handler = async (event) => {
 	if (!event.queryStringParameters)
-		return ServerReply (204, 'providers: no params!');
+		return ServerReply (204, {"error": 'not params!'});
 
 	var gender = event.queryStringParameters.gender;
 	var lastname1 = event.queryStringParameters.lastname1;
@@ -35,7 +35,7 @@ exports.handler = async (event) => {
  	
  	//check params
  	if(!zipcode && !lastname1 && !specialty)
-		return ServerReply (204, 'providers: not enought params!');
+		return ServerReply (204, {"error": 'not enought params!'});
 	
  	var query = "SELECT NPI,Provider_Full_Name,Provider_Full_Street,Provider_Full_City FROM npidata2 WHERE (";
  	if(lastname1)
@@ -69,6 +69,6 @@ exports.handler = async (event) => {
 			const [rows,fields] = await db.query(query);
 			return ServerReply (200, rows);
 		} catch(err) {
-			return ServerReply (500, 'db.query: ' + query + err);
+			return ServerReply (500, {"error": query + '#' + err});
 		}
 }; 

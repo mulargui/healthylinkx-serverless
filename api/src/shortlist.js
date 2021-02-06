@@ -44,13 +44,8 @@ exports.handler = async (event) => {
 		
 		[rows,fields] = await db.query(query);
 		
-		//var info=[{Transaction: transactionid}];
-		//info.push(rows);
-		var info={"providers": rows, "Transaction": transactionid};
-		//var info={"providers": rows};
-
-		return ServerReply (200, info);
+		return ServerReply (200, {"providers": rows, "Transaction": transactionid});
 	} catch(err) {
-		return ServerReply (500, 'db.query: ' + query + err);
+		return ServerReply (500, {"error": query + '#' + err});
 	}
 };

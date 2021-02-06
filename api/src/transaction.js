@@ -22,19 +22,19 @@ var db = mysql.createPool({
 
 exports.handler = async (event) => {
 	if (!event.queryStringParameters)
-		return ServerReply (204, 'shortlist: no transaction id');
+		return ServerReply (204, {"error": "no transaction id"});
 
 	var id = event.queryStringParameters.id;
 
  	//check params
- 	if(!id) return ServerReply (204, 'shortlist: no transaction id');
+ 	if(!id) return ServerReply (204, {"error": "no transaction id"});
 	
 	//retrieve the providers
 	var query = "SELECT * FROM transactions WHERE (id = '"+id+"')";
 	try {
 		[rows,fields] = await db.query(query);
 
-		if (rows.length <= 0) return ServerReply (204, 'no providers for transaction: ' + id);
+		if (rows.length <= 0) return ServerReply (204, {"error": query});
 
 		//get the providers
 		var npi1 = rows[0].NPI1;
@@ -51,6 +51,6 @@ exports.handler = async (event) => {
 		
 		return ServerReply(200, rows);
 	} catch(err) {
-		return ServerReply (500, 'db.query: ' + query + err);
+		return ServerReply (500, 'db.query: ' {"error": query + '#' + err});
 	}
 }; 

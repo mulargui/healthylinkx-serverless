@@ -9,7 +9,7 @@ sed -i "s/ZIPCODEAPI/$ZIPCODEAPI/" $ROOT/api/src/constants.js
 sed -i "s/ZIPCODETOKEN/$ZIPCODETOKEN/" $ROOT/api/src/constants.js
 
 # install node dependencies
-(cd $ROOT/api/src; npm install mysql2 http)
+(cd $ROOT/api/src; npm install mysql2 axios)
 
 #package the code (taxonomy)
 (cd $ROOT/api/src; zip -r taxonomy.zip taxonomy.js constants.js package-lock.json node_modules)

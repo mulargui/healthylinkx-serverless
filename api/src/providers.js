@@ -79,32 +79,27 @@ exports.handler = async (event) => {
  	//lets get a few zipcodes
  	var queryapi = "http://" + constants.zipcodeapi + "/rest/" + constants.zipcodetoken 
 		+ "/radius.json/" + zipcode + "/" + distance + "/mile";
-	var responsestring="";
+	var zipcodes="";
 
 	try {
 		const response = await axios.get(queryapi);
-		responsestring=response.data;
+		zipcodes=response.data;
 	} catch (err) {
 		return ServerReply (500, {"error": queryapi + ':' + err});
 	}
 
 	//no data
-  	if (!responsestring) return ServerReply (204, {"error": "no zipcodes!"});
+  	if (!zipcodes) return ServerReply (204, {"error": "no zipcodes!"});
 
-	return ServerReply (200, responsestring);
-	
-	
-	//translate json from string to array
-	var responsejson = JSON.parse(responsestring);
-	var length=responsejson.zip_codes.length;
+	var length=zipcodes.zip_codes.length;
 
 	//complete the query
  	if(lastname1 || gender || specialty)
- 		query += " AND ((Provider_Short_Postal_Code = '"+responsejson.zip_codes[0].zip_code+"')";
+ 		query += " AND ((Provider_Short_Postal_Code = '"+zipcodes.zip_codes[0].zip_code+"')";
  	else
- 		query += "((Provider_Short_Postal_Code = '"+responsejson.zip_codes[0].zip_code+"')";
+ 		query += "((Provider_Short_Postal_Code = '"+zipcodes.zip_codes[0].zip_code+"')";
 	for (var i=1; i<length;i++){
- 		query += " OR (Provider_Short_Postal_Code = '"+ responsejson.zip_codes[i].zip_code +"')";
+ 		query += " OR (Provider_Short_Postal_Code = '"+ zipcodes.zip_codes[i].zip_code +"')";
 	}
   	query += ")) limit 50";
 

@@ -78,7 +78,7 @@ exports.handler = async (event) => {
 
  	//lets get a few zipcodes
  	var queryapi = "http://" + constants.zipcodeapi + "/rest/" + constants.zipcodetoken 
-		+ "/" + zipcode + "/" + distance + "/mile";
+		+ "/radius.json/" + zipcode + "/" + distance + "/mile";
 	var responsestring="";
 
 	try {

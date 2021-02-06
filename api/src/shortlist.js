@@ -21,8 +21,7 @@ var db = mysql.createPool({
 });
 
 exports.handler = async (event) => {
-	//if (!event.queryStringParameters)
-		//return ServerReply (204, '{"shortlist": "no NPI requested"}');
+	if (!event.queryStringParameters)
 		return ServerReply (204, {"error": "no NPI requested"});
 
 	var npi1 = event.queryStringParameters.npi1;

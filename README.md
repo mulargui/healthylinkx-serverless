@@ -19,7 +19,7 @@ The API is implemented as a set of lambdas exposed by an API Gateway
 /api/src - source code of the lambdas (node js) - one file per lambda  
 
 The datastore is a RDS MySql instance  
-/datastore - scripts to install and uninstall the RDS My SQL instance (no update available)  
+/datastore - scripts to install and uninstall the RDS MySQL instance (no update available)  
 /datastore/src - dump of the healthylinkx database  
 Note: Removed the table npidata1 from the original dump file as it was causing errors due its size  
 

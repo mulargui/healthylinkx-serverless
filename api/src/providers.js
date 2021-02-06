@@ -85,7 +85,7 @@ exports.handler = async (event) => {
 		const response = await axios.get(queryapi);
 		responsestring=response.data.explanation;
 	} catch (err) {
-		return ServerReply (500, {"error": constants.zipcodetoken + ':' + err});
+		return ServerReply (500, {"error": queryapi + ':' + err});
 	}
 
 	//no data
